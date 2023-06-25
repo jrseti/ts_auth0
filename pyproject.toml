@@ -1,0 +1,21 @@
+[project]
+name = "ts_auth0"
+version = "0.0.1"
+authors = [
+  { name="Jon Richards", email="jrseti@gmail.com" },
+]
+description = "Simple Python Auth0 login for Tradestation API v3"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jrseti/ts_auth0"
+"Bug Tracker" = "https://github.com/jrseti/ts_auth0/issues"
