@@ -5,14 +5,14 @@ BNOTE: Not ready for general use yet! Still in development!
 
 This package is purely for experimental purposes and is not supported by Tradestation https://www.tradestation.com/. Use at your own risk - trading is risky!
 
-I found the Tradestation authenication process to be complicated, so once I figured out the correct procedure and was able to authenicate and get an access token, I wrapped it all into this easy to use Python class for all to enjoy!
+I found the Tradestation authentication process to be complicated, so once I figured out the correct procedure and was able to authenicate and get an access token, I wrapped it all into this easy to use Python class for all to enjoy!
 
 ts_auth0 provides a simple Python class which simplifies the Tradestation authentication process.
 See https://api.tradestation.com/docs/fundamentals/authentication/auth-overview/ for details of the authentication process ts_auth0 facilitates.
 
 ## Overview
 
-This package provides a simple way for your Python scripts to log into Tradestation for API access. The goal is to complete authenication and get an access token used in every API call. 
+This package provides a simple way for your Python scripts to log into Tradestation for API access. The goal is to complete authentication and get an access token used in every API call. 
 
 To start, you provide your API Key and Secret API Key. A simple function call is all that is required to log in and obtain an access token. The access token is then used for all API calls to get market updates, account information, etc.
 
