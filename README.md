@@ -1,8 +1,6 @@
 # ts_auth0
 Simple Python Auth0 login for Tradestation API v3
 
-BNOTE: Not ready for general use yet! Still in development!
-
 This package is purely for experimental purposes and is not supported by Tradestation https://www.tradestation.com/. Use at your own risk - trading is risky!
 
 I found the Tradestation authentication process to be complicated, so once I figured out the correct procedure and was able to authenicate and get an access token, I wrapped it all into this easy to use Python class for all to enjoy!
@@ -16,10 +14,11 @@ This package provides a simple way for your Python scripts to log into Tradestat
 
 To start, you provide your API Key and Secret API Key. A simple function call is all that is required to log in and obtain an access token. The access token is then used for all API calls to get market updates, account information, etc.
 
-Please note that this package only addresses authentication. Making API calls is a seperate task and not addresses in this package. But, see the example code below for an example of making an API once you pass authentication and are able to obtain the access token needed for all Tradestation API calls.
+Please note that this package only addresses authentication. Making API calls for market data and trading is a seperate task and not addresses in this package. But, see the example code below for an example of making an API once you pass authentication and are able to obtain the access token needed for all Tradestation API calls.
  
 - Works with Python >= 3.8
-- Tested on MacOS and Windows 11
+- Tested on MacOS
+- Not tested yet on Windows 
 
 To start, you will need to request API access from Tradestation. See  https://api.tradestation.com/docs/faq#how-do-i-get-an-api-key. Baically you need to do the following:
 
@@ -34,9 +33,14 @@ Install ts_auth0 with:
 Create a simple Ptyhon script with the following code: 
 
 ```
-from ts_auth0 import ts_auth0 
+from ts_auth0 import TS_Auth
+import requests
+import json
+import time
+from config import *
 
-ts = TS_Auth("Your API key", "Your Secret key")        
+ts = TS_Auth(API_KEY, API_SECRET_KEY)
+                
 ts.start_auth0()
 
 try:
@@ -61,6 +65,13 @@ try:
     
 except TS_Auth.Auth_Error as e:
     print(e)
+
+```
+
+FYI: To run this simple sample code your config.py file should look like this:
+```
+API_KEY = "Your API key",  
+API_SECRET_KEY = "Your secret key"
 ```
 
 Running this script (python ./test.py) will cause the following:
@@ -87,7 +98,7 @@ parameters = {
     'REDIRECT_PORT': 8080,
     'SHOW_KEYS_IN_STR': True
 }
-ts = TS_Auth("Your API key", "Your Secret key", **parameters)
+ts = TS_Auth(API_KEY, API_SECRET_KEY, **parameters)
 ...
 ```
 
