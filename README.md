@@ -18,7 +18,7 @@ Please note that this package only addresses authentication. Making API calls fo
  
 - Works with Python >= 3.8
 - Tested on MacOS
-- Not tested yet on Windows 
+- Tested on Windows 11 
 
 To start, you will need to request API access from Tradestation. See  https://api.tradestation.com/docs/faq#how-do-i-get-an-api-key. Baically you need to do the following:
 
