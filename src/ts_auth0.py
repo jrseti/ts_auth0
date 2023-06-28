@@ -5,7 +5,7 @@ Description: This script handles the authentication process for the Tradestation
 Author: Jon Richards, jrseti@gmail.com
 Copyrite: 2023, Jon Richards
 Licence: MIT
-Version: 0.1.0
+Version: 0.0.11
 """
 
 import json
@@ -22,7 +22,7 @@ __author__ = "Jon Richards"
 __copyright__ = "Copyright 2023, Jon Richards"
 __credits__ = ["Jon Richards"]
 __license__ = "MIT"
-__version__ = "0.1.0"
+__version__ = "0.0.11"
 __maintainer__ = "Jon Richards"
 __email__ = "jrseti@gmail.com"
 __status__ = "Dev"

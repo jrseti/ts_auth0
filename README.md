@@ -1,8 +1,6 @@
 # ts_auth0
 Simple Python Auth0 login for Tradestation API v3
 
-# NOT READY FOR USE! STILL TRYING TO GET THE PACKAGE INTO PYPI
-
 This package is purely for experimental purposes and is not supported by Tradestation https://www.tradestation.com/. Use at your own risk - trading is risky!
 
 I found the Tradestation authentication process to be complicated, so once I figured out the correct procedure and was able to authenicate and get an access token, I wrapped it all into this easy to use Python class for all to enjoy!
@@ -122,5 +120,7 @@ Here is a list of the extra parametersw you can modify:
   - Default: False
 
 
+# TODO
 
+Next, I need to make the Tradestation login to be headless so you do not have to manually log in via the browser. Stay tuned.
 
