@@ -127,7 +127,7 @@ I tried implementing headless login, where the user name and password would be u
 
 # Refresh Token
 
-The refresh token is assigned as a result of the authentication process. This token string is stored in a text file. The next time start_auth0() is called, the authentication is skipped and the previous refresh token is used to obtain an access toke needed for your first API call. Via the Tradestation Forum one of the engineers said that the refresh toke remains valid indefinately. So in theory this code should only need to perform the login and two-factor authentication once, and the refresh token will be re-used on subsequent re-starts of the code.
+The refresh token is assigned as a result of the authentication process. This token string is stored in a text file. The next time start_auth0() is called, the authentication is skipped and the previous refresh token is used to obtain an access token needed for your first API call. Via the Tradestation Forum one of the engineers said that the refresh token remains valid indefinately. So in theory this code should only need to perform the login and two-factor authentication once, and the refresh token will be re-used on subsequent re-starts of the code.
 
 
 

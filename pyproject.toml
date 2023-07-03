@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ts_auth0"
-version = "0.0.13"
+version = "0.0.14"
 authors = [
   { name="Jon Richards", email="jrseti@gmail.com" },
 ]
@@ -17,8 +17,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "requests",
-    "selenium"
+    "requests"
 ]
 
 [project.urls]
