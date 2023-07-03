@@ -5,10 +5,7 @@ Description: This script handles the authentication process for the Tradestation
 Author: Jon Richards, jrseti@gmail.com
 Copyrite: 2023, Jon Richards
 Licence: MIT
-Version: 0.0.11
 """
-
-import json
 import requests
 import webbrowser
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -17,12 +14,13 @@ import string
 import random
 import time
 import copy
+import os
 
 __author__ = "Jon Richards"
 __copyright__ = "Copyright 2023, Jon Richards"
 __credits__ = ["Jon Richards"]
 __license__ = "MIT"
-__version__ = "0.0.11"
+__version__ = "0.0.13"
 __maintainer__ = "Jon Richards"
 __email__ = "jrseti@gmail.com"
 __status__ = "Dev"
@@ -38,7 +36,8 @@ class TS_Auth:
         "REDIRECT_URI" : "http://localhost",
         "SCOPE" : "openid profile MarketData ReadAccount Trade Matrix OptionSpreads offline_access",
         "TOKEN_REQUEST_URL" : "https://signin.tradestation.com/oauth/token",
-        "SHOW_KEYS_IN_STR" : False
+        "SHOW_KEYS_IN_STR" : False,
+        "REFRESH_TOKEN_CACHE_FILE" : "refresh_token_cache.txt"
     }
 
     def __init__(self, 
@@ -63,6 +62,8 @@ class TS_Auth:
                     Default: https://signin.tradestation.com/oauth/token
                 SHOW_KEYS_IN_STR (bool): Show the API keys in the string representation of the class
                     Default: False
+                REFRESH_TOKEN_CACHE_FILE (str): The file to cache the refresh token
+                    Default: refresh_token_cache.txt
 
         Raises:
             Auth_Error: Invalid parameter
@@ -91,9 +92,10 @@ class TS_Auth:
         if "TOKEN_REQUEST_URL" not in parameters:
             self._parameters["TOKEN_REQUEST_URL"] = TS_Auth._DEFAULT_PARAMETERS["TOKEN_REQUEST_URL"]
         if "SHOW_KEYS_IN_STR" not in parameters:
-            self._parameters["SHOW_KEYS_IN_STR"] = TS_Auth._DEFAULT_PARAMETERS["SHOW_KEYS_IN_STR"]  
-
-        
+            self._parameters["SHOW_KEYS_IN_STR"] = TS_Auth._DEFAULT_PARAMETERS["SHOW_KEYS_IN_STR"] 
+        if "REFRESH_TOKEN_CACHE_FILE" not in parameters:
+            self._parameters["REFRESH_TOKEN_CACHE_FILE"] = TS_Auth._DEFAULT_PARAMETERS["REFRESH_TOKEN_CACHE_FILE"]
+     
         # Initialize the class variables.
         self._code = None
         self._access_end_of_life = 0
@@ -166,6 +168,10 @@ class TS_Auth:
             Auth_Error: The auth server did not respond within the specified timeout period.
         """
 
+        if self._attempt_getting_access_token() is True:
+            print("Access token already exists and is valid, skipping login")
+            return;
+
         self._returned_code = None
         self._keep_running = True;
 
@@ -194,7 +200,7 @@ class TS_Auth:
         }
         url = f'{self._parameters["BASE_URL"]}?{urllib.parse.urlencode(url_params)}'
         
-        # Open the browser and request the url
+        # Open the browser and request the url, requiring the user to manually login
         webbrowser.open(url)
         
         # Wait for the auth server to report the code. _RequestHandler do_Get() will set self._code
@@ -263,6 +269,29 @@ class TS_Auth:
 
         return response_data['access_token']
     
+    def _attempt_getting_access_token(self):
+        """Attempt to get an access token using the previous refresh token
+        Args:
+            previous_refresh_token (str): The previous refresh token
+        Returns:
+            str: The access token, None if there was an error
+        """
+        token_cache_file = self._parameters["REFRESH_TOKEN_CACHE_FILE"]
+        if os.path.exists(token_cache_file) == False:
+            return False;
+    
+        with open(token_cache_file, 'r') as f:
+            previous_refresh_token = f.read()
+            self._refresh_token = previous_refresh_token
+            print(f"Attempting to get access token using previous refresh token {self._refresh_token}")
+            try:
+                self.get_access_token()
+                print("Got access token using previous refresh token")
+                return True
+            except:
+                print("Error getting access token using previous refresh token")
+                return False
+    
     def _constructRedirectURI(self):
         """Construct the actual redirect URI from the server name and port.
         If the server port is None, then the port is not included in the URI
@@ -296,7 +325,11 @@ class TS_Auth:
             response = requests.request("POST", url, headers=headers, data=payload)
             response_data = response.json()
             self._refresh_token = response_data['refresh_token']
+            # Save the refresh token to a file
+            token_cache_file = self._parameters["REFRESH_TOKEN_CACHE_FILE"]
+            with open(token_cache_file, 'w') as f:
+                f.write(self._refresh_token)
             return
         except:
             raise self.Auth_Error("Error getting refresh token, try again")
-
+        

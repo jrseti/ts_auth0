@@ -118,9 +118,16 @@ Here is a list of the extra parametersw you can modify:
   - Default: https://signin.tradestation.com/oauth/token
 - SHOW_KEYS_IN_STR (bool): Show the API keys in the string representation of the class
   - Default: False
+- REFRESH_TOKEN_CACHE_FILE (str): The file to cache the refresh token.
+  - Default: refresh_token_cache.txt
+
+# Headless
+
+I tried implementing headless login, where the user name and password would be used automatically to log in without requiring interaction with a browser. I ran into difficulty with the two-factor authentication, you still need to enter the code received in email or on your phone. So for now I have not implemented headless mode. Maybe I will in the future if I move my trading projects over to a server in the cloud. I could automate everything except the two-factor authenication. TBD.
+
+# Refresh Token
+
+The refresh token is assigned as a result of the authentication process. This token string is stored in a text file. The next time start_auth0() is called, the authentication is skipped and the previous refresh token is used to obtain an access toke needed for your first API call. Via the Tradestation Forum one of the engineers said that the refresh toke remains valid indefinately. So in theory this code should only need to perform the login and two-factor authentication once, and the refresh token will be re-used on subsequent re-starts of the code.
 
 
-# TODO
-
-Next, I need to make the Tradestation login to be headless so you do not have to manually log in via the browser. Stay tuned.
 
